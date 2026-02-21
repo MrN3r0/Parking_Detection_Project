@@ -1,0 +1,225 @@
+{
+  "mode": "image",
+  "source_image": "Parking_Photo.jpg",
+  "yolo_model": "yolov8s.pt",
+  "conf_thresh": 0.12,
+  "show_spot_debug": false,
+  "vehicle_classes": [
+    "car",
+    "truck",
+    "bus",
+    "motorcycle"
+  ],
+  "use_pixel_fallback": true,
+  "baseline_image": "Parking_Photo.jpg",
+  "diff_ratio_thresh": 0.08,
+  "diff_pixel_thresh": 35,
+  "diff_blur_ksize": 7,
+  "lot_prefix": "GLL",
+  "spot_row": "B",
+  "spot_start_number": 1,
+  "display_max_w": 1600,
+  "display_max_h": 900,
+  "spot_overlap_thresh": 0.01,
+  "box_expand_px": 8,
+  "min_intersection_px": 600,
+  "show_debug_boxes": false,
+  "line_thickness": 4,
+  "label_font_scale": 0.2,
+  "label_thickness": 0.9,
+  "spots": [
+    {
+      "spot_id": "GLL-B01",
+      "poly": [
+        [
+          2208,
+          2441
+        ],
+        [
+          2541,
+          2341
+        ],
+        [
+          2851,
+          2618
+        ],
+        [
+          2513,
+          2722
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B02",
+      "poly": [
+        [
+          2613,
+          2332
+        ],
+        [
+          2989,
+          2203
+        ],
+        [
+          3312,
+          2503
+        ],
+        [
+          2955,
+          2618
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B03",
+      "poly": [
+        [
+          3041,
+          2203
+        ],
+        [
+          3317,
+          2103
+        ],
+        [
+          3698,
+          2399
+        ],
+        [
+          3412,
+          2494
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B04",
+      "poly": [
+        [
+          3408,
+          2146
+        ],
+        [
+          3693,
+          2051
+        ],
+        [
+          4069,
+          2351
+        ],
+        [
+          3798,
+          2460
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B05",
+      "poly": [
+        [
+          3708,
+          2051
+        ],
+        [
+          3917,
+          1984
+        ],
+        [
+          4355,
+          2251
+        ],
+        [
+          4117,
+          2341
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B06",
+      "poly": [
+        [
+          1051,
+          1104
+        ],
+        [
+          1256,
+          1113
+        ],
+        [
+          1413,
+          1237
+        ],
+        [
+          1175,
+          1280
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B07",
+      "poly": [
+        [
+          4193,
+          2080
+        ],
+        [
+          4336,
+          2037
+        ],
+        [
+          4760,
+          2265
+        ],
+        [
+          4441,
+          2360
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B08",
+      "poly": [
+        [
+          4312,
+          3179
+        ],
+        [
+          4674,
+          2994
+        ],
+        [
+          5345,
+          3455
+        ],
+        [
+          4879,
+          3636
+        ]
+      ]
+    },
+    {
+      "spot_id": "GLL-B09",
+      "poly": [
+        [
+          4845,
+          3022
+        ],
+        [
+          5078,
+          2879
+        ],
+        [
+          5702,
+          3193
+        ],
+        [
+          5550,
+          3451
+        ]
+      ]
+    }
+  ],
+  "trace_image_size": {
+    "w": 5712,
+    "h": 4284
+  }
+}
