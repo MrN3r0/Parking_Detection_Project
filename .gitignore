@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local training/inference outputs
+runs/
+
+# Local datasets and generated crop exports
+training/aerial-car.v1i.yolov8/
+training/spot_classifier/
+training/local_finetune_review/
+
+# Local model weights. Keep these out of git unless intentionally releasing them.
+*.pt
+
+# Local scratch/test images
+test_images/

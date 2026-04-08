@@ -1,10 +1,12 @@
 import cv2
 import numpy as np
 
+
 def clean_poly(poly):
     pts = np.array(poly, dtype=np.int32).reshape((-1, 1, 2))
     hull = cv2.convexHull(pts).reshape((-1, 2))
     return hull.tolist()
+
 
 def normalize_spots(spots):
     out = []
@@ -12,6 +14,7 @@ def normalize_spots(spots):
         if "poly" in s and s["poly"]:
             out.append({"spot_id": s.get("spot_id", "SPOT"), "poly": clean_poly(s["poly"])})
     return out
+
 
 def scale_spots_to_frame(spots, from_w, from_h, to_w, to_h):
     sx = to_w / from_w
@@ -22,48 +25,44 @@ def scale_spots_to_frame(spots, from_w, from_h, to_w, to_h):
         scaled.append({**s, "poly": new_poly})
     return scaled
 
-def point_in_poly(x, y, poly):
+
+def polygon_mask(shape_hw, poly):
+    h, w = shape_hw
+    mask = np.zeros((h, w), dtype=np.uint8)
     pts = np.array(poly, dtype=np.int32)
-    return cv2.pointPolygonTest(pts, (float(x), float(y)), False) >= 0
+    cv2.fillPoly(mask, [pts], 255)
+    return mask
 
-def poly_area(poly):
-    pts = np.array(poly, dtype=np.float32)
-    return float(cv2.contourArea(pts))
 
-def box_poly(x1, y1, x2, y2):
-    return np.array([[x1, y1], [x2, y1], [x2, y2], [x1, y2]], dtype=np.float32)
+def extract_spot_crop(frame_bgr, poly, padding_ratio=0.10, crop_size=224):
+    """
+    Extract a masked parking-space crop for classification.
+    Pixels outside the polygon are zeroed so the classifier focuses on the spot.
+    """
+    polygon = np.array(clean_poly(poly), dtype=np.float32)
+    h, w = frame_bgr.shape[:2]
 
-def intersect_area_convex(poly_a, poly_b):
-    a = np.array(poly_a, dtype=np.float32)
-    inter_area, _ = cv2.intersectConvexConvex(a, poly_b)
-    return float(inter_area)
+    min_xy = polygon.min(axis=0)
+    max_xy = polygon.max(axis=0)
+    bbox_w = max_xy[0] - min_xy[0]
+    bbox_h = max_xy[1] - min_xy[1]
 
-def spot_occupancy_center_or_overlap(spots, vehicle_boxes, overlap_thresh=0.08):
-    out = {}
-    for s in spots:
-        sid = s["spot_id"]
-        poly = clean_poly(s["poly"])
-        spot_area = max(poly_area(poly), 1.0)
+    pad_x = max(4.0, bbox_w * padding_ratio)
+    pad_y = max(4.0, bbox_h * padding_ratio)
 
-        occupied = False
-        best_ratio = 0.0
+    x0 = max(0, int(np.floor(min_xy[0] - pad_x)))
+    y0 = max(0, int(np.floor(min_xy[1] - pad_y)))
+    x1 = min(w, int(np.ceil(max_xy[0] + pad_x)))
+    y1 = min(h, int(np.ceil(max_xy[1] + pad_y)))
 
-        for (x1, y1, x2, y2) in vehicle_boxes:
-            cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+    if x1 <= x0 or y1 <= y0:
+        return None
 
-            if point_in_poly(cx, cy, poly):
-                occupied = True
-                best_ratio = 1.0
-                break
+    crop = frame_bgr[y0:y1, x0:x1].copy()
+    local_poly = polygon - np.array([x0, y0], dtype=np.float32)
 
-            vb_poly = box_poly(x1, y1, x2, y2)
-            inter = intersect_area_convex(poly, vb_poly)
-            ratio = inter / spot_area
-            best_ratio = max(best_ratio, ratio)
+    mask = np.zeros(crop.shape[:2], dtype=np.uint8)
+    cv2.fillPoly(mask, [local_poly.astype(np.int32)], 255)
+    crop[mask == 0] = 0
 
-            if ratio >= overlap_thresh:
-                occupied = True
-                break
-
-        out[sid] = {"occupied": occupied, "score": float(best_ratio)}
-    return out
+    return cv2.resize(crop, (crop_size, crop_size), interpolation=cv2.INTER_AREA)
