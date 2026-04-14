@@ -1,0 +1,14 @@
+path: training/aerial-car.v1i.yolov8
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 4
+names: ['0', '1', '2', '3']
+
+roboflow:
+  workspace: nereos-workspace
+  project: aerial-car-4verp
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/nereos-workspace/aerial-car-4verp/dataset/1

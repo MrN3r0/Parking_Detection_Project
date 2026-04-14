@@ -2,27 +2,6 @@ __pycache__/
 *.py[cod]
 .venv/
 
-# Local training/inference outputs
-runs/
-
-# Local datasets and generated crop exports
-training/aerial-car.v1i.yolov8/
-training/spot_classifier/
-training/fine_tune_parking/
-training/local_finetune_review/
-
-# Roboflow dataset exports accidentally extracted at repo root
-train/
-valid/
-test/
-data.yaml
-README.dataset.txt
-README.roboflow.txt
+# Project artifacts are intentionally tracked for this class repo:
+# runs/, training datasets/crops, model weights, and test_images/.
 *.zip
-
-# Local model weights. Keep these out of git unless intentionally releasing them.
-*.pt
-trained_models/
-
-# Local scratch/test images
-test_images/
