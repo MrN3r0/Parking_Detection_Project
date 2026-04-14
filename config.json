@@ -1,6 +1,7 @@
 {
   "mode": "image",
   "source_image": "test_images/Parking_Lot_Photo2.jpg",
+  "classifier_model": "runs/classify/fine_tune_models/epo20bat16/weights/best.pt",
   "yolo_model": "yolov8n.pt",
   "conf_thresh": 0.12,
   "show_spot_debug": false,
