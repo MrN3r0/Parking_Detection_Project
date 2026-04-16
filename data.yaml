@@ -1,6 +1,6 @@
-train: ../train/images
-val: ../valid/images
-test: ../test/images
+train: c:/Users/Work/Desktop/Parking_Detection_Project/train/images
+val: c:/Users/Work/Desktop/Parking_Detection_Project/valid/images
+test: c:/Users/Work/Desktop/Parking_Detection_Project/test/images
 
 nc: 3
 names: ['0', '1', 'None']
